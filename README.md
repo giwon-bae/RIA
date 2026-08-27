@@ -20,9 +20,11 @@ RIA 는 여러 사이트의 검색 결과를 모으는 범용 크롤러가 아�
 
 | 스테이지 | 범위 | 상태 |
 |---|---|---|
-| S1 Foundation | 계약 · 정책 · 저장 · CLI 뼈대 | 진행 중 |
+| S1 Foundation | 계약 · 정책 · 저장 · CLI 뼈대 | 완료 (`s1-foundation`) |
 | S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | 미착수 |
 | S3 MCP · Job · 검증 | MCP 도구 12종 · Job · 품질 게이트 | 미착수 |
+
+S1 에서 발견한 제약과 DESIGN 과의 불일치는 [`REPORT-S1.md`](REPORT-S1.md) 에 전건 기록했다.
 
 ## 요구 사항
 
