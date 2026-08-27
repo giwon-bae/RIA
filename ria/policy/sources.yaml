@@ -1,0 +1,454 @@
+# Source Registry — 플랫폼 접근·상업 이용·보관 정책의 정본 (DESIGN §8.1)
+#
+# 플랫폼 정책을 코드 상수나 README 문장으로 관리하지 않는다. 이 파일이 정본이다.
+# 승인·거절 같은 상태 변화는 `access_status` 와 `last_verified_at` 을 갱신해서 반영한다.
+# 코드를 고치지 않는다 (DESIGN §21 승인 대기 원칙 1).
+#
+# 시드 근거: DESIGN §7 판정표 20행 (기준일 2026-08-11).
+#            Reddit·Threads 항목은 2026-08-27 공식 문서로 재확인.
+# policy_urls 는 DESIGN §7.1 에 링크가 있는 소스만 채운다. 없는 소스는 빈 배열로 두고
+# 추측한 URL 을 넣지 않는다.
+
+version: "2.1"
+verified_baseline: 2026-08-11
+
+# Source Pack 10종 (DESIGN §5.1). pack_ids 는 이 목록 안에서만 쓴다.
+packs:
+  - authority-stats
+  - company-market
+  - search-demand
+  - community-signal
+  - tech-launch
+  - video-signal
+  - app-market
+  - commerce-signal
+  - regulation-policy
+  - web-primary
+
+sources:
+  # --- authority-stats -----------------------------------------------------
+  - source_id: kosis
+    name: KOSIS 국가통계포털
+    pack_ids: [authority-stats]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: dataset_specific
+    storage_policy: retain_allowed
+    deletion_policy: none_required
+    allowed_data_types: [public_statistics, statistical_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [data_go_kr, world_bank]
+    policy_urls:
+      - https://kosis.kr/openapi/file/openApi_manual_v1.0.pdf
+    notes: 공개 통계와 메타정보를 제공한다. 자료별 이용 조건은 호출 전 확인한다.
+
+  - source_id: data_go_kr
+    name: 공공데이터포털
+    pack_ids: [authority-stats, regulation-policy]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: dataset_specific
+    storage_policy: retain_allowed
+    deletion_policy: source_specific
+    allowed_data_types: [public_statistics, public_dataset, statistical_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [kosis]
+    policy_urls: []
+    notes: 데이터셋별로 이용허락·트래픽·활용신청 조건이 다르다. 데이터셋 단위로 정책을 검사한다.
+
+  - source_id: world_bank
+    name: World Bank Open Data
+    pack_ids: [authority-stats]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: none
+    rate_limit_model: unknown
+    storage_policy: retain_allowed
+    deletion_policy: none_required
+    allowed_data_types: [public_statistics, statistical_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [kosis]
+    policy_urls: []
+    notes: 무인증으로 호출할 수 있다. 개별 데이터셋 조건은 확인한다.
+
+  # --- company-market ------------------------------------------------------
+  - source_id: opendart
+    name: OpenDART 전자공시
+    pack_ids: [company-market]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: retain_allowed
+    deletion_policy: none_required
+    allowed_data_types: [disclosure_document, financial_statement, corporate_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [web-primary]
+    policy_urls:
+      - https://opendart.fss.or.kr/intro/main.do
+    notes: 개인·기업·기관이 사용할 수 있다. 공시 원문과 재무 데이터를 제공한다.
+
+  # --- search-demand -------------------------------------------------------
+  - source_id: naver_search
+    name: NAVER 검색 API (API Hub)
+    pack_ids: [search-demand]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: retain_allowed
+    deletion_policy: source_specific
+    allowed_data_types: [search_results, content_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [web-primary]
+    policy_urls:
+      - https://developers.naver.com/notice/article/32530
+      - https://developers.naver.com/products/terms/
+    notes: 애플리케이션 등록과 약관 준수가 필요하다. 기존 개발자센터 API 는 2027-06-30 종료 예정이라 API Hub 이관이 필요하다.
+
+  - source_id: naver_datalab
+    name: NAVER DataLab 검색어 트렌드
+    pack_ids: [search-demand]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: retain_allowed
+    deletion_policy: source_specific
+    # 상대 지수만 허용한다. 절대 검색량으로 표현하는 것을 데이터 타입 수준에서 막는다 (DESIGN §6.3).
+    allowed_data_types: [relative_search_index]
+    blocked_data_types: [absolute_search_volume, personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [naver_search]
+    policy_urls:
+      - https://developers.naver.com/notice/article/32530
+      - https://developers.naver.com/products/terms/
+    notes: 상대 지수이며 절대 검색량이 아니다. API Hub 이관이 필요하다.
+
+  - source_id: naver_shopping_insight
+    name: NAVER 쇼핑인사이트
+    pack_ids: [search-demand, commerce-signal]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: retain_allowed
+    deletion_policy: source_specific
+    allowed_data_types: [relative_click_index]
+    blocked_data_types: [absolute_click_volume, personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [naver_datalab]
+    policy_urls:
+      - https://developers.naver.com/notice/article/32530
+      - https://developers.naver.com/products/terms/
+    notes: 쇼핑 분야 상대 클릭 트렌드다. API Hub 이관이 필요하다.
+
+  - source_id: naver_shopping_search
+    name: NAVER 쇼핑 검색 API (서비스 종료)
+    pack_ids: [commerce-signal]
+    access_status: blocked
+    access_method: none
+    official: true
+    commercial_use: not_applicable
+    auth_type: none
+    rate_limit_model: unknown
+    storage_policy: no_storage
+    deletion_policy: none_required
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: false
+    fallback_sources: []
+    policy_urls:
+      - https://developers.naver.com/notice/article/32530
+    notes: 2026-07-31 서비스 종료. 대체 API 가 없다. collector 를 만들지 않는다.
+
+  - source_id: google_trends
+    name: Google Trends API (Alpha)
+    pack_ids: [search-demand]
+    # DESIGN §7 은 conditional/experimental 로 적는다. 공식 endpoint 문서를 확보하기 전까지
+    # 실행을 차단해야 하므로 더 보수적인 experimental 로 둔다.
+    access_status: experimental
+    access_method: official_api
+    official: true
+    commercial_use: unclear
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: no_storage
+    deletion_policy: none_required
+    allowed_data_types: []
+    blocked_data_types: [absolute_search_volume, personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [naver_datalab]
+    policy_urls:
+      - https://developers.google.com/search/apis/trends
+    notes: 제한된 테스터만 접근할 수 있다. 공식 endpoint 문서 확보 전까지 실행 차단 상태를 유지한다.
+
+  # --- tech-launch ---------------------------------------------------------
+  - source_id: hacker_news
+    name: Hacker News 공식 Firebase API
+    pack_ids: [tech-launch]
+    access_status: core
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: none
+    rate_limit_model: none
+    storage_policy: retain_allowed
+    deletion_policy: none_required
+    allowed_data_types: [public_post, engagement_metric, content_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: false
+    fallback_sources: [hn_algolia, web-primary]
+    policy_urls:
+      - https://github.com/HackerNews/API
+    notes: 공개 항목을 읽을 수 있고 공식 API 자체에는 현재 rate limit 이 없다. 점수·댓글 수는 HN 내부 반응으로만 해석한다.
+
+  - source_id: hn_algolia
+    name: HN Algolia Search (제3자)
+    pack_ids: [tech-launch]
+    access_status: conditional
+    access_method: third_party_api
+    official: false
+    commercial_use: unclear
+    auth_type: none
+    rate_limit_model: unknown
+    storage_policy: metadata_only
+    deletion_policy: none_required
+    allowed_data_types: [content_metadata]
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [hacker_news]
+    policy_urls: []
+    notes: HN 공식 검색 API 가 아니다. 검색 후 반드시 원본 HN item 으로 검증한 뒤 저장한다.
+
+  - source_id: product_hunt
+    name: Product Hunt GraphQL API
+    pack_ids: [tech-launch]
+    access_status: blocked
+    access_method: official_api
+    official: true
+    commercial_use: separate_agreement_required
+    auth_type: oauth
+    rate_limit_model: server_headers
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [hacker_news, web-primary]
+    policy_urls:
+      - https://api.producthunt.com/v2/docs
+      - https://api.producthunt.com/v2/docs/rate_limits/headers
+    notes: public read 는 가능하지만 기본적으로 상업 이용이 금지된다. 서면 허용을 확보하기 전까지 실호출하지 않는다.
+
+  # --- community-signal ----------------------------------------------------
+  # 승인 신청 진행 중 — 승인 시 이 필드만 전환
+  - source_id: reddit
+    name: Reddit Data API
+    pack_ids: [community-signal]
+    access_status: blocked
+    access_method: official_api
+    official: true
+    commercial_use: separate_agreement_required
+    auth_type: oauth
+    # 공식 문서에 rate limit 수치가 없다. X-Ratelimit-* 응답 헤더를 읽어 처리한다.
+    rate_limit_model: server_headers
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-27
+    verify_before_use: true
+    fallback_sources: [threads, web-primary]
+    policy_urls:
+      - https://redditinc.com/policies/data-api-terms
+      - https://support.reddithelp.com/hc/en-us/articles/42728983564564-Responsible-Builder-Policy
+      - https://support.reddithelp.com/hc/en-us/articles/14945211791892-Developer-Platform-Accessing-Reddit-Data
+      - https://support.reddithelp.com/hc/en-us/articles/49381918834964-Reddit-for-Researchers-Program
+    notes: 승인 신청 진행 중 — 승인 시 이 필드만 전환. 비상업 이용도 Data Access Request 승인이 필수다. 승인 전 실호출 금지.
+
+  # 미승인 시 본인 게시물만 검색 — App Review 신청 진행 중
+  - source_id: threads
+    name: Threads API (keyword search)
+    pack_ids: [community-signal]
+    access_status: conditional
+    access_method: official_api
+    official: true
+    commercial_use: unclear
+    auth_type: oauth
+    rate_limit_model: daily_quota
+    quota:
+      limit: 2200
+      window_hours: 24
+      scope: per_user
+      note: 앱 간 합산. 0건 응답은 미차감. limit 파라미터 최대 100.
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-27
+    verify_before_use: true
+    fallback_sources: [reddit, web-primary]
+    policy_urls:
+      - https://developers.facebook.com/docs/threads/keyword-search/
+      - https://developers.facebook.com/docs/threads/get-started
+      - https://www.postman.com/meta/threads/collection/dht3nzz/threads-api
+    notes: 미승인 시 본인 게시물만 검색 — App Review 신청 진행 중. threads_basic 과 threads_keyword_search 권한이 필요하다. 장기 토큰 60일.
+
+  - source_id: x_twitter
+    name: X (Twitter) API
+    pack_ids: [community-signal]
+    access_status: blocked
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: oauth
+    rate_limit_model: paid_tier
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [threads, web-primary]
+    policy_urls: []
+    notes: 읽기 비용과 사용 제약이 현재 예산 정책과 맞지 않는다. 기본 비활성화한다.
+
+  # --- video-signal --------------------------------------------------------
+  - source_id: youtube_data
+    name: YouTube Data API v3
+    pack_ids: [video-signal]
+    access_status: conditional
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: daily_quota
+    # 비인가 공개 데이터는 30일 이내 삭제 또는 갱신해야 한다.
+    storage_policy: refresh_or_delete_30d
+    deletion_policy: delete_or_refresh_30d
+    allowed_data_types: [video_metadata, engagement_metric]
+    blocked_data_types:
+      - personal_sensitive_data
+      - cross_platform_merged_metric
+      - derived_metric
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [web-primary]
+    policy_urls:
+      - https://developers.google.com/youtube/terms/developer-policies
+      - https://developers.google.com/youtube/v3/determine_quota_cost
+    notes: 보관·표현 정책 구현이 필수다. 30일 retention, 플랫폼 간 데이터 구분, 파생 지표 제한.
+
+  # --- app-market ----------------------------------------------------------
+  - source_id: google_play
+    name: Google Play
+    pack_ids: [app-market]
+    access_status: experimental
+    access_method: none
+    official: false
+    commercial_use: unclear
+    auth_type: none
+    rate_limit_model: unknown
+    storage_policy: no_storage
+    deletion_policy: none_required
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [web-primary]
+    policy_urls:
+      - https://developers.google.com/android-publisher/reply-to-reviews
+    notes: 경쟁 앱용 공식 검색 API 가 없다. 공식 리뷰 API 는 자신이 운영하는 앱 대상이다. 등록만 하고 실호출 경로를 열지 않는다. 핵심 근거로 쓰지 않는다.
+
+  - source_id: app_store
+    name: App Store Search / RSS
+    pack_ids: [app-market]
+    access_status: experimental
+    access_method: official_feed
+    official: true
+    commercial_use: unclear
+    auth_type: none
+    rate_limit_model: unknown
+    storage_policy: no_storage
+    deletion_policy: none_required
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [web-primary]
+    policy_urls:
+      - https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/
+    notes: Search API 문서가 오래됐고 프로모션 목적 조건이 강하다. 내부 경쟁 조사 용도는 재검토가 필요하다. 등록만 하고 실호출 경로를 열지 않는다.
+
+  # --- commerce-signal -----------------------------------------------------
+  - source_id: coupang_seller
+    name: Coupang Seller Open API
+    pack_ids: [commerce-signal]
+    access_status: blocked
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [naver_shopping_insight]
+    policy_urls: []
+    notes: 본인 판매자 계정의 상품·주문·정산 운영 목적이다. 전체 시장 검색용 API 가 아니므로 시장조사에는 사용하지 않는다.
+
+  - source_id: coupang_partners
+    name: Coupang Partners API
+    pack_ids: [commerce-signal]
+    access_status: conditional
+    access_method: official_api
+    official: true
+    commercial_use: allowed_with_conditions
+    auth_type: api_key
+    rate_limit_model: unknown
+    storage_policy: approved_use_only
+    deletion_policy: source_specific
+    allowed_data_types: []
+    blocked_data_types: [personal_sensitive_data]
+    last_verified_at: 2026-08-11
+    verify_before_use: true
+    fallback_sources: [naver_shopping_insight]
+    policy_urls: []
+    notes: 승인된 파트너의 수익 활동 목적에 한정된다. 승인·노출·링크 정책을 지켜야 한다. 등록만 하고 실호출 경로를 열지 않는다.
