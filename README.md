@@ -52,6 +52,37 @@ Reddit · Threads 는 키가 있어도 **승인 전에는 Policy Guard 가 차�
 
 키 목록과 발급처는 `.env.example` 을 정본으로 본다.
 
+## CLI 사용 예시
+
+S1 범위는 `source list` 와 `source check` 두 개다. **둘 다 네트워크를 타지 않는다.**
+
+```bash
+# 등록된 소스 20건을 표로 본다
+.venv/bin/python -m ria.cli source list
+
+# Pack·상태로 거른다
+.venv/bin/python -m ria.cli source list --pack community-signal
+.venv/bin/python -m ria.cli source list --status blocked
+
+# Policy Guard 6단 검사를 돌린다. 차단이면 어느 단계에서 왜 막혔는지 나온다.
+.venv/bin/python -m ria.cli source check reddit
+.venv/bin/python -m ria.cli source check hacker_news
+
+# 기계 판독용
+.venv/bin/python -m ria.cli source list --json
+.venv/bin/python -m ria.cli source check reddit --json
+
+# 상업 조사 맥락을 끄거나, 호출 예정량·기준일을 바꿔서 검사한다
+.venv/bin/python -m ria.cli source check hn_algolia --non-commercial
+.venv/bin/python -m ria.cli source check threads --calls 2500
+.venv/bin/python -m ria.cli source check hacker_news --as-of 2027-01-01
+```
+
+`pip install -e .` 를 했다면 `ria source list` 로도 부를 수 있다.
+
+`source check` 는 평가에 성공하면 항상 종료 코드 0 이다. 허용·차단 여부는 종료 코드가
+아니라 출력(또는 `--json` 의 `allowed`)에 담긴다. 종료 코드 1 은 인자 오류 같은 실행 실패다.
+
 ## 검사
 
 ```bash
