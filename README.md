@@ -21,7 +21,7 @@ RIA 는 여러 사이트의 검색 결과를 모으는 범용 크롤러가 아�
 | 스테이지 | 범위 | 상태 |
 |---|---|---|
 | S1 Foundation | 계약 · 정책 · 저장 · CLI 뼈대 | 완료 (`s1-foundation`) |
-| S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | 미착수 |
+| S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | 구현 완료 · 종료 게이트 검증 중 |
 | S3 MCP · Job · 검증 | MCP 도구 12종 · Job · 품질 게이트 | 미착수 |
 
 S1 에서 발견한 제약과 DESIGN 과의 불일치는 [`REPORT-S1.md`](REPORT-S1.md) 에 전건 기록했다.
@@ -54,9 +54,12 @@ Reddit · Threads 는 키가 있어도 **승인 전에는 Policy Guard 가 차�
 
 키 목록과 발급처는 `.env.example` 을 정본으로 본다.
 
+개인정보 처리 방침: [`PRIVACY.md`](PRIVACY.md)
+
 ## CLI 사용 예시
 
-S1 범위는 `source list` 와 `source check` 두 개다. **둘 다 네트워크를 타지 않는다.**
+`source list/check`·`query`·`snapshot` 명령은 네트워크 없이 로컬 정책·SQLite만 다룬다. `collect`는
+Policy Guard 통과 후에만 공식 API를 호출하고, 차단 소스는 실호출 없이 gap을 남긴다.
 
 ```bash
 # 등록된 소스 20건을 표로 본다
@@ -78,12 +81,34 @@ S1 범위는 `source list` 와 `source check` 두 개다. **둘 다 네트워크
 .venv/bin/python -m ria.cli source check hn_algolia --non-commercial
 .venv/bin/python -m ria.cli source check threads --calls 2500
 .venv/bin/python -m ria.cli source check hacker_news --as-of 2027-01-01
+
+# 허용된 소스를 수집해 정규화·적재한다
+.venv/bin/python -m ria.cli collect world_bank SP.POP.TOTL \
+  --options-json '{"country":"KOR","mrv":1,"per_page":1}' --json
+.venv/bin/python -m ria.cli collect hacker_news launch \
+  --options-json '{"item_ids":[8863]}' --json
+
+# Pack은 source별 옵션을 하나의 JSON object로 받는다
+.venv/bin/python -m ria.cli collect authority-stats population \
+  --source-options-json '{"world_bank":{"country":"KOR","mrv":1}}' --json
+
+# Reddit·Threads는 승인 전에 status=blocked/conditional이므로 호출 없이 gap 1건
+.venv/bin/python -m ria.cli collect reddit demand --json
+.venv/bin/python -m ria.cli collect threads demand --json
+
+# 적재된 관측·지표와 스냅샷 메타데이터를 조회한다
+.venv/bin/python -m ria.cli query observations --source hacker_news --limit 20 --json
+.venv/bin/python -m ria.cli query metrics score --platform hacker_news --json
+.venv/bin/python -m ria.cli snapshot get snap_xxx --json
+# 원본 body는 명시적으로 요청할 때만 출력한다
+.venv/bin/python -m ria.cli snapshot get snap_xxx --include-body --json
 ```
 
 `pip install -e .` 를 했다면 `ria source list` 로도 부를 수 있다.
 
-`source check` 는 평가에 성공하면 항상 종료 코드 0 이다. 허용·차단 여부는 종료 코드가
-아니라 출력(또는 `--json` 의 `allowed`)에 담긴다. 종료 코드 1 은 인자 오류 같은 실행 실패다.
+`source check`와 `collect`는 판정·실행 경로가 정상적으로 끝나면 차단이어도 종료
+코드 0이다. 허용·차단 여부는 `allowed`·`status`·`gaps`에 담긴다. 잘못된 인자·미등록
+대상·수집 실패·DB 오류는 0이 아닌 종료 코드로 반환한다.
 
 ## 검사
 
@@ -93,8 +118,8 @@ S1 범위는 `source list` 와 `source check` 두 개다. **둘 다 네트워크
 .venv/bin/python -m pytest
 ```
 
-테스트는 네트워크를 타지 않는다. `.env` 값이 있든 없든 동일하게 통과해야 하며,
-config 값은 monkeypatch 로 차단한다.
+기본 pytest는 fixture + 소켓 차단으로 네트워크 0건을 보장한다. `.env` 값이 있든 없든
+동일하게 통과해야 하며, config는 자격증명 0개의 임시 값으로 교체한다.
 
 ## 디렉터리
 
