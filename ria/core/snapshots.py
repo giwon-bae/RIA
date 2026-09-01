@@ -217,6 +217,8 @@ def enforce_retention(
 
     기본 동작은 원본 body 만 지우고 해시·URL·수집 시점은 남기는 것이다. 그래야
     "이 자료를 봤고 지금은 정책에 따라 지웠다"는 사실이 추적 가능하게 남는다.
+    YouTube는 같은 원본에 연결된 관측 payload도 비우고 그 관측에서 파생 없이 복사한
+    metric 행도 지운다. 관측 trace 자체와 ContentItem은 남긴다.
     `purge=True` 면 행 자체를 지운다 — 메타데이터도 남길 수 없을 때만 쓴다.
     """
     targets = expired_snapshots(store, as_of, source_id=source_id)
@@ -225,6 +227,32 @@ def enforce_retention(
 
     ids = [snapshot.snapshot_id for snapshot in targets]
     placeholders = ", ".join("?" for _ in ids)
+
+    # purge가 raw snapshot FK를 먼저 끊어 버리기 전에 연결된 YouTube observation을
+    # 확보한다. 다른 source의 snapshot·observation·metric에는 이 정리를 적용하지 않는다.
+    youtube_snapshot_ids = [
+        snapshot.snapshot_id for snapshot in targets if snapshot.source_id == "youtube_data"
+    ]
+    if youtube_snapshot_ids:
+        youtube_placeholders = ", ".join("?" for _ in youtube_snapshot_ids)
+        rows = store.connection.execute(
+            "SELECT observation_id FROM source_observations"
+            f" WHERE source_id = 'youtube_data'"
+            f" AND snapshot_id IN ({youtube_placeholders})",
+            youtube_snapshot_ids,
+        ).fetchall()
+        observation_ids = [str(row["observation_id"]) for row in rows]
+        if observation_ids:
+            observation_placeholders = ", ".join("?" for _ in observation_ids)
+            store.connection.execute(
+                f"DELETE FROM metrics WHERE observation_id IN ({observation_placeholders})",
+                observation_ids,
+            )
+            store.connection.execute(
+                "UPDATE source_observations SET payload_json = NULL"
+                f" WHERE observation_id IN ({observation_placeholders})",
+                observation_ids,
+            )
 
     if purge:
         store.connection.execute(

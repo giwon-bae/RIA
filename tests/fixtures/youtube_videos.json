@@ -1,0 +1,50 @@
+{
+  "kind": "youtube#videoListResponse",
+  "etag": "fixture-videos-etag",
+  "pageInfo": {
+    "totalResults": 2,
+    "resultsPerPage": 2
+  },
+  "items": [
+    {
+      "kind": "youtube#video",
+      "etag": "fixture-video-1",
+      "id": "abc123XYZ01",
+      "snippet": {
+        "publishedAt": "2026-08-28T01:00:00Z",
+        "channelId": "channel-001",
+        "title": "스마트팩토리 AI 도입 사례",
+        "description": "제조 현장 적용 사례를 설명합니다.",
+        "channelTitle": "Factory Lab",
+        "categoryId": "28",
+        "defaultAudioLanguage": "ko"
+      },
+      "statistics": {
+        "viewCount": "1200",
+        "likeCount": "87",
+        "favoriteCount": "0",
+        "commentCount": "12"
+      }
+    },
+    {
+      "kind": "youtube#video",
+      "etag": "fixture-video-2",
+      "id": "def456UVW02",
+      "snippet": {
+        "publishedAt": "2026-08-29T02:30:00Z",
+        "channelId": "channel-002",
+        "title": "비전 검사 자동화 튜토리얼",
+        "description": "공식 API fixture의 두 번째 영상입니다.",
+        "channelTitle": "Vision Makers",
+        "categoryId": "28",
+        "defaultLanguage": "ko"
+      },
+      "statistics": {
+        "viewCount": "250",
+        "likeCount": "19",
+        "favoriteCount": "0",
+        "commentCount": "3"
+      }
+    }
+  ]
+}

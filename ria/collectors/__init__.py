@@ -25,6 +25,7 @@ from ria.collectors.persistence import (
 )
 from ria.collectors.web_primary import StoredWebSnapshot, store_web_snapshot
 from ria.collectors.world_bank import WorldBankCollector
+from ria.collectors.youtube import YouTubeCollector
 
 __all__ = [
     "CollectResult",
@@ -49,6 +50,7 @@ __all__ = [
     "PersistedCollectResult",
     "StoredWebSnapshot",
     "WorldBankCollector",
+    "YouTubeCollector",
     "persist_collect_result",
     "snapshot_metadata",
     "store_web_snapshot",

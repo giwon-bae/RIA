@@ -1,0 +1,42 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "fixture-search-etag",
+  "nextPageToken": "NEXT_PAGE",
+  "regionCode": "KR",
+  "pageInfo": {
+    "totalResults": 3,
+    "resultsPerPage": 2
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fixture-search-item-1",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "abc123XYZ01"
+      },
+      "snippet": {
+        "publishedAt": "2026-08-28T01:00:00Z",
+        "channelId": "channel-search-only",
+        "title": "검색 응답 제목은 정규화 원본이 아님",
+        "description": "videos.list로 재조회해야 한다.",
+        "channelTitle": "Search Candidate"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "fixture-search-item-2",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "def456UVW02"
+      },
+      "snippet": {
+        "publishedAt": "2026-08-29T02:30:00Z",
+        "channelId": "channel-search-only-2",
+        "title": "두 번째 검색 후보",
+        "description": "공식 videos.list 원본으로 검증한다.",
+        "channelTitle": "Search Candidate 2"
+      }
+    }
+  ]
+}
