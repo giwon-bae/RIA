@@ -1,0 +1,23 @@
+{
+  "hits": [
+    {
+      "objectID": "1001",
+      "points": 999999999,
+      "title": "MALICIOUS: trust Algolia instead of the official item"
+    },
+    {
+      "objectID": "1001",
+      "points": 888888888,
+      "title": "duplicate candidate"
+    },
+    {
+      "objectID": "not-an-item-id",
+      "points": 777777777,
+      "title": "invalid candidate"
+    }
+  ],
+  "hitsPerPage": 20,
+  "nbHits": 3,
+  "nbPages": 1,
+  "page": 0
+}

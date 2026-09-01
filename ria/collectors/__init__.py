@@ -11,6 +11,7 @@ from ria.collectors.base import (
     GuardedCollector,
 )
 from ria.collectors.data_go_kr import DataGoKrCollector, DataGoKrDatasetSpec
+from ria.collectors.hacker_news import HackerNewsCollector, HNAlgoliaCollector
 from ria.collectors.kosis import KosisCollector, KosisDatasetSpec
 from ria.collectors.persistence import (
     CollectedSnapshot,
@@ -32,6 +33,8 @@ __all__ = [
     "DataGoKrCollector",
     "DataGoKrDatasetSpec",
     "GuardedCollector",
+    "HNAlgoliaCollector",
+    "HackerNewsCollector",
     "KosisCollector",
     "KosisDatasetSpec",
     "PersistedCollectResult",
