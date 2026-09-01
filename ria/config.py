@@ -106,6 +106,7 @@ POLICY_TTL_DAYS: Mapping[str, int] = MappingProxyType(
 # 응답 헤더(rate_limit_model: server_headers)를 따른다. 추측값을 넣지 않는다.
 DEFAULT_MAX_CALLS_PER_RUN = 50
 DEFAULT_WEB_SNAPSHOT_MAX_EXCERPT_CHARS = 1_000
+DEFAULT_THREADS_TOKEN_WARNING_DAYS = 7
 
 
 @dataclass(frozen=True)
@@ -175,6 +176,7 @@ class Config:
     default_policy_ttl_days: int = DEFAULT_POLICY_TTL_DAYS
     default_max_calls_per_run: int = DEFAULT_MAX_CALLS_PER_RUN
     web_snapshot_max_excerpt_chars: int = DEFAULT_WEB_SNAPSHOT_MAX_EXCERPT_CHARS
+    threads_token_warning_days: int = DEFAULT_THREADS_TOKEN_WARNING_DAYS
     policy_ttl_days: Mapping[str, int] = field(default_factory=lambda: POLICY_TTL_DAYS)
     quotas: Mapping[str, SourceQuota] = field(default_factory=lambda: SOURCE_QUOTAS)
     credentials: Mapping[str, str] = field(default_factory=dict)

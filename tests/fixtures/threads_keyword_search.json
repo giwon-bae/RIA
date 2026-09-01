@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": "threads-fixture-1",
+      "text": "스마트팩토리 현장 적용 사례",
+      "media_type": "TEXT_POST",
+      "permalink": "https://www.threads.net/@fixture/post/threads-fixture-1",
+      "username": "fixture",
+      "timestamp": "2026-08-31T08:00:00Z",
+      "like_count": 12,
+      "replies_count": 3,
+      "views": 120
+    }
+  ],
+  "paging": {"cursors": {"after": "NEXT"}}
+}

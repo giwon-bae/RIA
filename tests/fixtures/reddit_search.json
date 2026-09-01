@@ -1,0 +1,23 @@
+{
+  "kind": "Listing",
+  "data": {
+    "after": "t3_next",
+    "children": [
+      {
+        "kind": "t3",
+        "data": {
+          "id": "reddit-fixture-1",
+          "name": "t3_reddit-fixture-1",
+          "title": "RIA evidence collection discussion",
+          "subreddit": "MachineLearning",
+          "permalink": "/r/MachineLearning/comments/fixture/ria_evidence/",
+          "url_overridden_by_dest": "https://example.com/ria-evidence",
+          "created_utc": 1788249600,
+          "score": 42,
+          "num_comments": 7,
+          "author": "fixture_user"
+        }
+      }
+    ]
+  }
+}
