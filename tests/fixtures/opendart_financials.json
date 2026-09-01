@@ -1,0 +1,32 @@
+{
+  "status": "000",
+  "message": "정상",
+  "list": [
+    {
+      "rcept_no": "20260331000001",
+      "reprt_code": "11011",
+      "bsns_year": "2025",
+      "corp_code": "fixture-corp",
+      "corp_name": "테스트 주식회사",
+      "sj_div": "BS",
+      "sj_nm": "재무상태표",
+      "account_id": "ifrs-full_Assets",
+      "account_nm": "자산총계",
+      "thstrm_nm": "제 10 기",
+      "thstrm_amount": "1,234,567"
+    },
+    {
+      "rcept_no": "20260331000001",
+      "reprt_code": "11011",
+      "bsns_year": "2025",
+      "corp_code": "fixture-corp",
+      "corp_name": "테스트 주식회사",
+      "sj_div": "IS",
+      "sj_nm": "손익계산서",
+      "account_id": "ifrs-full_Revenue",
+      "account_nm": "매출액",
+      "thstrm_nm": "제 10 기",
+      "thstrm_amount": "987,654"
+    }
+  ]
+}

@@ -13,6 +13,7 @@ from ria.collectors.base import (
 from ria.collectors.data_go_kr import DataGoKrCollector, DataGoKrDatasetSpec
 from ria.collectors.hacker_news import HackerNewsCollector, HNAlgoliaCollector
 from ria.collectors.kosis import KosisCollector, KosisDatasetSpec
+from ria.collectors.opendart import OpenDartCollector
 from ria.collectors.persistence import (
     CollectedSnapshot,
     PersistedCollectResult,
@@ -38,6 +39,7 @@ __all__ = [
     "HackerNewsCollector",
     "KosisCollector",
     "KosisDatasetSpec",
+    "OpenDartCollector",
     "PersistedCollectResult",
     "StoredWebSnapshot",
     "WorldBankCollector",
