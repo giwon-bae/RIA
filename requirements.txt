@@ -1,5 +1,6 @@
 # RIA Core 런타임 의존성.
 # 금지: openai / Responses API 클라이언트 / Agents SDK 등 과금형 AI SDK (DESIGN §3.4)
+httpx>=0.28,<1
 pydantic>=2.7
 PyYAML>=6.0
 python-dotenv>=1.0

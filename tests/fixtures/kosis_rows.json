@@ -1,0 +1,26 @@
+[
+  {
+    "ORG_ID": "fixture-org",
+    "TBL_ID": "fixture-table",
+    "TBL_NM": "테스트 통계표",
+    "ITM_ID": "fixture-item",
+    "ITM_NM": "테스트 인구",
+    "C1": "fixture-region",
+    "C1_NM": "테스트 지역",
+    "UNIT_NM": "명",
+    "PRD_DE": "2024",
+    "DT": "1,234"
+  },
+  {
+    "ORG_ID": "fixture-org",
+    "TBL_ID": "fixture-table",
+    "TBL_NM": "테스트 통계표",
+    "ITM_ID": "fixture-item",
+    "ITM_NM": "테스트 인구",
+    "C1": "fixture-region",
+    "C1_NM": "테스트 지역",
+    "UNIT_NM": "명",
+    "PRD_DE": "2023",
+    "DT": "-"
+  }
+]

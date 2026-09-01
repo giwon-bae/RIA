@@ -1,0 +1,22 @@
+{
+  "response": {
+    "header": {"resultCode": "00", "resultMsg": "NORMAL SERVICE."},
+    "body": {
+      "items": {
+        "item": [
+          {
+            "row_id": "fixture-1",
+            "name": "테스트 공공데이터 행",
+            "value": "42.5",
+            "unit": "건",
+            "region": "테스트 지역",
+            "period": "2024"
+          }
+        ]
+      },
+      "numOfRows": 100,
+      "pageNo": 1,
+      "totalCount": 1
+    }
+  }
+}

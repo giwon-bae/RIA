@@ -1,0 +1,32 @@
+[
+  {
+    "page": 1,
+    "pages": 1,
+    "per_page": "50",
+    "total": 2,
+    "sourceid": "2",
+    "lastupdated": "2026-08-26"
+  },
+  [
+    {
+      "indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
+      "country": {"id": "KR", "value": "Korea, Rep."},
+      "countryiso3code": "KOR",
+      "date": "2024",
+      "value": 51751065,
+      "unit": "people",
+      "obs_status": "",
+      "decimal": 0
+    },
+    {
+      "indicator": {"id": "SP.POP.TOTL", "value": "Population, total"},
+      "country": {"id": "KR", "value": "Korea, Rep."},
+      "countryiso3code": "KOR",
+      "date": "2023",
+      "value": null,
+      "unit": "people",
+      "obs_status": "",
+      "decimal": 0
+    }
+  ]
+]
