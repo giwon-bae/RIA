@@ -1,0 +1,18 @@
+{
+  "lastBuildDate": "Tue, 01 Sep 2026 15:00:00 +0900",
+  "total": 243,
+  "start": 1,
+  "display": 2,
+  "items": [
+    {
+      "title": "<b>스마트팩토리</b> 도입 가이드",
+      "link": "https://example.com/smart-factory-guide",
+      "description": "중소기업을 위한 <b>스마트팩토리</b> 구축 안내"
+    },
+    {
+      "title": "AI 제조 혁신 사례",
+      "link": "https://industry.example.org/ai-manufacturing",
+      "description": "현장 데이터로 살펴본 제조 혁신 사례"
+    }
+  ]
+}

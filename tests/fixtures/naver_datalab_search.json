@@ -1,0 +1,23 @@
+{
+  "startDate": "2026-08-01",
+  "endDate": "2026-08-02",
+  "timeUnit": "date",
+  "results": [
+    {
+      "title": "스마트팩토리",
+      "keywords": ["스마트팩토리", "스마트 공장"],
+      "data": [
+        {"period": "2026-08-01", "ratio": 73.25},
+        {"period": "2026-08-02", "ratio": 100}
+      ]
+    },
+    {
+      "title": "제조 AI",
+      "keywords": ["제조 AI"],
+      "data": [
+        {"period": "2026-08-01", "ratio": 42.5},
+        {"period": "2026-08-02", "ratio": 61.75}
+      ]
+    }
+  ]
+}

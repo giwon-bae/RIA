@@ -1,0 +1,23 @@
+{
+  "startDate": "2026-08-01",
+  "endDate": "2026-08-02",
+  "timeUnit": "date",
+  "results": [
+    {
+      "title": "산업용 센서",
+      "keyword": "산업용 센서",
+      "data": [
+        {"period": "2026-08-01", "ratio": 88.4},
+        {"period": "2026-08-02", "ratio": 100}
+      ]
+    },
+    {
+      "title": "온도 센서",
+      "keyword": "온도 센서",
+      "data": [
+        {"period": "2026-08-01", "ratio": 55.2},
+        {"period": "2026-08-02", "ratio": 63.1}
+      ]
+    }
+  ]
+}
