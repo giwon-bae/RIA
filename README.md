@@ -21,10 +21,11 @@ RIA 는 여러 사이트의 검색 결과를 모으는 범용 크롤러가 아�
 | 스테이지 | 범위 | 상태 |
 |---|---|---|
 | S1 Foundation | 계약 · 정책 · 저장 · CLI 뼈대 | 완료 (`s1-foundation`) |
-| S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | 구현 완료 · 종료 게이트 검증 중 |
+| S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | 완료 (`s2-collectors`; B-7 정책 판정 대기) |
 | S3 MCP · Job · 검증 | MCP 도구 12종 · Job · 품질 게이트 | 미착수 |
 
 S1 에서 발견한 제약과 DESIGN 과의 불일치는 [`REPORT-S1.md`](REPORT-S1.md) 에 전건 기록했다.
+S2 라운드별 게이트·제약·미해결은 [`REPORT-S2.md`](REPORT-S2.md) 에 기록했다.
 
 ## 요구 사항
 
@@ -98,7 +99,7 @@ Policy Guard 통과 후에만 공식 API를 호출하고, 차단 소스는 실�
 
 # 적재된 관측·지표와 스냅샷 메타데이터를 조회한다
 .venv/bin/python -m ria.cli query observations --source hacker_news --limit 20 --json
-.venv/bin/python -m ria.cli query metrics score --platform hacker_news --json
+.venv/bin/python -m ria.cli query metrics hn_score --platform hacker_news --json
 .venv/bin/python -m ria.cli snapshot get snap_xxx --json
 # 원본 body는 명시적으로 요청할 때만 출력한다
 .venv/bin/python -m ria.cli snapshot get snap_xxx --include-body --json

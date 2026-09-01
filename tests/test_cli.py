@@ -775,8 +775,9 @@ def test_readme_marks_s2_complete_and_links_privacy_once() -> None:
 
     assert (
         "| S2 Pack & Collector | 수집 → 정규화 → 저장 관통 | "
-        "구현 완료 · 종료 게이트 검증 중 |" in readme
+        "완료 (`s2-collectors`; B-7 정책 판정 대기) |" in readme
     )
     assert readme.count("[`PRIVACY.md`](PRIVACY.md)") == 1
     assert "collect reddit demand --json" in readme
+    assert "query metrics hn_score --platform hacker_news --json" in readme
     assert "fixture + 소켓 차단" in readme
