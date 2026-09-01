@@ -19,6 +19,7 @@ from ria.collectors.persistence import (
     persist_collect_result,
     snapshot_metadata,
 )
+from ria.collectors.web_primary import StoredWebSnapshot, store_web_snapshot
 from ria.collectors.world_bank import WorldBankCollector
 
 __all__ = [
@@ -38,7 +39,9 @@ __all__ = [
     "KosisCollector",
     "KosisDatasetSpec",
     "PersistedCollectResult",
+    "StoredWebSnapshot",
     "WorldBankCollector",
     "persist_collect_result",
     "snapshot_metadata",
+    "store_web_snapshot",
 ]
